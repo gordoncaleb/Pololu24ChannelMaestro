@@ -20,8 +20,8 @@ public class MaestroController {
 	private static final int DEFAULT_ACCELERATION = 20; // max is 255
 	private final boolean verbose; // if true: messages in console are shown
 	private int POS_MID = 1500;
-	private int POS_MAX = 2100; // in fact: 2000
-	private int POS_MIN = 800; // in fact: 900
+	private int POS_MAX = 2100; // documentation says: 2000
+	private int POS_MIN = 600; // documentation says: 900
 
 	public static class Command {
 		public static final byte SET_SPEED = (byte) 0x87;
@@ -66,19 +66,20 @@ public class MaestroController {
 	}
 
 	/**
+	 *<h1>unused</h1>
 	 * (L) sets all channels up for a 100 ms
 	 * 
 	 * @throws InterruptedException
 	 *             - needed. We using Thread.sleep()
 	 */
 	private void init() throws InterruptedException {
-
-//		for (int i = 0; i < 24; i++) {
-//			setSpeed(i, DEFAULT_SPEED);
-//			setAcceleration(i, 20);
-//		}
-//		Thread.sleep(100);
-//		goHome();
+		
+		// for (int i = 0; i < 24; i++) {
+		// setSpeed(i, DEFAULT_SPEED);
+		// setAcceleration(i, 20);
+		// }
+		// Thread.sleep(100);
+		// goHome();
 
 		if (verbose)
 			System.out.println("Init done");
@@ -152,9 +153,18 @@ public class MaestroController {
 	 * @param servo
 	 * @param pos
 	 */
+	public void setPositionFastest(int servo, int pos) {
+		if (verbose)
+			System.out.println("Setting position " + servo + "/" + pos);
+		setSpeed(servo, 0);
+		setAcceleration(servo, 0);
+		setPositionOnly(servo, pos);
+	}
+
 	public void setPosition(int servo, int pos) {
 		if (verbose)
 			System.out.println("Setting position " + servo + "/" + pos);
+
 		setSpeed(servo, DEFAULT_SPEED);
 		setAcceleration(servo, DEFAULT_ACCELERATION);
 		setPositionOnly(servo, pos);
