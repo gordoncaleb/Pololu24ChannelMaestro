@@ -1,1 +1,8 @@
-/bin/
+target
+*.DS_Store
+.classpath
+.project
+.settings
+*.iml
+.idea
+dependency-reduced-pom.xml
