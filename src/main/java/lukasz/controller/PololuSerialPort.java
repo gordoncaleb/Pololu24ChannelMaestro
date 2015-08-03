@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by skokys@gmail.com on 16.5.2014.
@@ -49,9 +50,16 @@ public class PololuSerialPort {
     // }
 
     private void connect(String portName) throws Exception {
-        Enumeration e = CommPortIdentifier.getPortIdentifiers();
-        CommPortIdentifier port = (CommPortIdentifier) e.nextElement();
-        System.out.println("Port:" + port == null ? "Error" : port.getName());
+        Enumeration<CommPortIdentifier> e = CommPortIdentifier.getPortIdentifiers();
+
+        Map<String, CommPortIdentifier> cpis = Collections.list(e).stream()
+                .collect(Collectors.toMap(CommPortIdentifier::getName, Function.identity()));
+
+        System.out.println("Found Ports:" + cpis.toString().replaceAll(",", "\n"));
+
+        CommPortIdentifier port = cpis.get(portName);
+
+        System.out.println(port == null ? "Error with port" : "Port:" + port.getName() + " PortName:" + portName);
 
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 
