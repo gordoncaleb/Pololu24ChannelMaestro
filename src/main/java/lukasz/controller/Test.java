@@ -12,6 +12,7 @@ public class Test {
         String comRef = args.length > 0 ? args[0] : "COM5";
 
         try {
+            System.out.println("Testing on COM: " + comRef);
             MaestroController controller = new MaestroController(comRef, true);
             isAlive = true;
 
